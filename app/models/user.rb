@@ -5,6 +5,7 @@ class User < ApplicationRecord
                format: { with: URI::MailTo::EMAIL_REGEXP }
     validates :username, presence: true, uniqueness: true
     validates :encrypted_password, presence: true
+    enum role: { super_admin: 0, admin: 1 }
 
     before_save :encrypt_password, :downcase_email
 
