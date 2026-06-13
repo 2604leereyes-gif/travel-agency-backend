@@ -1,3 +1,3 @@
 # frozen_string_literal: true
 
-class ClientController < ApplicationController; end
+class Api::V1::ClientController < ApplicationController; end

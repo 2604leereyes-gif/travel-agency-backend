@@ -1,5 +1,5 @@
-class AdminController < ApplicationController
-    before_action :set_current_user
+class Api::V1::AdminController < ApplicationController
+    before_action :set_current_user, :authenticate_user!
 
     private
 
@@ -7,19 +7,22 @@ class AdminController < ApplicationController
         auth_header = request.headers["Authorization"]
         token = auth_header.split(" ").last if auth_header
 
-        if token
-            begin
-                decoded_token = JwtService.decode(token)
-                @current_user = User.find(decoded_token[:user_id])
-            rescue JWT::DecodeError, ActiveRecord::RecordNotFound
-                @current_user = nil
-            end
-        end
+        return if token.blank?
+
+        decoded_token = JwtService.decode(token)
+
+        return if decoded_token.blank?
+
+        @current_user = User.find(decoded_token[:user_id])
+    end
+
+    def current_user
+        @current_user
     end
 
     def authenticate_user!
         return if current_user
-
+ 
         render json: { error: "Unauthorized" }, status: :unauthorized
     end
 
