@@ -6,8 +6,10 @@ class JwtService
 
   class << self
     # CREATE TOKEN
-    def encode(payload, exp = Rails.application.config_for(:settings)[:jwt][:expiry_hours])
-      payload = payload.merge(exp: exp.to_i)
+    def encode(payload, exp_hours = Rails.application.config_for(:settings)[:jwt][:expiry_hours])
+      payload = payload.merge(
+        exp: Time.now.to_i + exp_hours.to_i * 3600
+      )
 
       JWT.encode(payload, SECRET_KEY, ALGORITHM)
     end
@@ -22,6 +24,11 @@ class JwtService
       ).first
 
       decoded.with_indifferent_access
+
+    rescue JWT::ExpiredSignature
+      nil
+    rescue JWT::DecodeError
+      nil
     end
   end
 end
