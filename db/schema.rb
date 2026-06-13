@@ -10,7 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_06_13_113003) do
+ActiveRecord::Schema[7.2].define(version: 2026_06_13_172927) do
+  create_table "inquiries", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "email", null: false
+    t.string "full_name", null: false
+    t.string "phone_number"
+    t.string "destination"
+    t.date "departure_date"
+    t.date "return_date"
+    t.integer "number_of_travelers"
+    t.decimal "estimated_budget", precision: 12, scale: 2
+    t.text "notes"
+    t.bigint "travel_package_id"
+    t.integer "status", default: 0, null: false
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deleted_at"], name: "index_inquiries_on_deleted_at"
+    t.index ["departure_date"], name: "index_inquiries_on_departure_date"
+    t.index ["email"], name: "index_inquiries_on_email"
+    t.index ["status"], name: "index_inquiries_on_status"
+    t.index ["travel_package_id"], name: "index_inquiries_on_travel_package_id"
+  end
+
   create_table "travel_packages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title", null: false
     t.text "description"
@@ -21,6 +43,10 @@ ActiveRecord::Schema[7.2].define(version: 2026_06_13_113003) do
     t.boolean "is_active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "number_of_days", default: 1, null: false
+    t.integer "number_of_nights", default: 0, null: false
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_travel_packages_on_deleted_at"
     t.index ["destination"], name: "index_travel_packages_on_destination"
     t.index ["is_active"], name: "index_travel_packages_on_is_active"
   end
@@ -33,4 +59,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_06_13_113003) do
     t.datetime "updated_at", null: false
     t.integer "role", default: 0, null: false
   end
+
+  add_foreign_key "inquiries", "travel_packages"
 end
