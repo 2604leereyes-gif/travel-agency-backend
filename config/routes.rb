@@ -9,6 +9,10 @@ Rails.application.routes.draw do
         resource :user, only: :show
         resources :users, only: [:index, :create, :update, :destroy]
       end
+      scope module: :client do
+        resources :travel_packages, only: [:index, :show]
+        resources :inquiries, only: [:create]
+      end
     end
   end
 end
