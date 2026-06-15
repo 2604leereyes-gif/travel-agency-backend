@@ -7,8 +7,8 @@ class Inquiry < ApplicationRecord
 
   enum status: {
     pending: 0,
-    reviewed: 1,
-    accepted: 2,
+    quoted: 1,
+    confirmed: 2,
     cancelled: 3
   }
 

@@ -5,6 +5,10 @@ class TravelPackageBlueprint < Blueprinter::Base
 
   fields :title, :description, :base_price, :show_price, :number_of_travelers, :destination, :is_active
 
+  field :image_url do |package|
+    package.image.url
+  end
+
   field :created_at do |obj|
     obj.created_at.iso8601
   end

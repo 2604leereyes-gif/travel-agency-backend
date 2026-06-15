@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-class Api::V1::InquiriesController < Api::V1::ClientController
+class Api::V1::Client::InquiriesController < Api::V1::ClientController
   def create
     inquiry = Inquiry.new(inquiry_params)
 
     if inquiry.save
       render json: InquiryBlueprint.render_as_hash(inquiry), status: :created
     else
-      render json: { errors: inquiry.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: inquiry.errors.full_messages.join(", ") }, status: :unprocessable_entity
     end
   end
 

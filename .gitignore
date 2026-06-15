@@ -35,3 +35,5 @@
 .env
 /config/settings.yml
 
+/public/uploads
+

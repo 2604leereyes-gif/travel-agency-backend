@@ -3,10 +3,20 @@
 class Api::V1::Admin::TravelPackagesController < Api::V1::AdminController
   before_action :set_travel_package, only: [:show, :update, :destroy]
 
-  def index
-    travel_packages = TravelPackage.order(created_at: :desc)
+  PER_PAGE = 10
 
-    render json: TravelPackageBlueprint.render_as_hash(travel_packages)
+  def index
+    travel_packages = TravelPackage.order(created_at: :desc).page(params[:page]).per(PER_PAGE)
+    render json: {
+      travel_packages: TravelPackageBlueprint.render_as_hash(travel_packages),
+      meta: {
+        current_page: travel_packages.current_page,
+        next_page: travel_packages.next_page,
+        prev_page: travel_packages.prev_page,
+        total_pages: travel_packages.total_pages,
+        total_count: travel_packages.total_count
+      }
+    }
   end
 
   def show
@@ -19,7 +29,8 @@ class Api::V1::Admin::TravelPackagesController < Api::V1::AdminController
     if travel_package.save
       render json: TravelPackageBlueprint.render_as_hash(travel_package), status: :created
     else
-      render json: { errors: travel_package.errors.full_messages }, status: :unprocessable_entity
+      p travel_package.errors.full_messages
+      render json: { error: travel_package.errors.full_messages.join(", ") }, status: :unprocessable_entity
     end
   end
 
@@ -27,7 +38,7 @@ class Api::V1::Admin::TravelPackagesController < Api::V1::AdminController
     if @travel_package.update(travel_package_params)
       render json: TravelPackageBlueprint.render_as_hash(@travel_package)
     else
-      render json: { errors: @travel_package.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: @travel_package.errors.full_messages.join(", ") }, status: :unprocessable_entity
     end
   end
 
@@ -35,7 +46,7 @@ class Api::V1::Admin::TravelPackagesController < Api::V1::AdminController
     if @travel_package.destroy
       render json: { message: "Travel package deleted" }
     else
-      render json: { errors: @travel_package.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: @travel_package.errors.full_messages.join(", ") }, status: :unprocessable_entity
     end
   end
 
@@ -53,7 +64,8 @@ class Api::V1::Admin::TravelPackagesController < Api::V1::AdminController
       :show_price,
       :number_of_travelers,
       :destination,
-      :is_active
+      :is_active,
+      :image_data
     )
   end
 end
