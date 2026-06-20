@@ -5,7 +5,11 @@ Rails.application.routes.draw do
         namespace :auth do
           resources :sessions, only: :create
         end
-        resources :subscribers, only: [:index, :destroy]
+        resources :subscribers, only: [:index, :destroy] do
+          collection do
+            post 'export'
+          end
+        end
         resources :inquiries, except: :create
         resources :travel_packages
         resource :user, only: :show
