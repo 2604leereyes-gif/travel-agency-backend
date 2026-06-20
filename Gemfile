@@ -14,6 +14,7 @@ gem "puma", ">= 5.0"
 gem "rack-cors"
 gem 'redis'
 gem 'resend'
+gem 'rest-client'
 gem 'sidekiq'
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
