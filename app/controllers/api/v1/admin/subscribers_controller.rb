@@ -53,11 +53,7 @@ class Api::V1::Admin::SubscribersController < Api::V1::AdminController
       filename = "subscribers_#{Time.current.to_i}"
 
       SubscribersExportJob.perform_later(export_id, filename, request.base_url)
-      ActionCable.server.broadcast("export_#{export_id}", {
-        status: 'assad',
-        timestamp: Time.current.iso8601,
-         hello: 'asdasd'
-      })
+
       render json: {
         message: 'Export queued',
         export_id: export_id
