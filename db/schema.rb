@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_06_13_172927) do
+ActiveRecord::Schema[7.2].define(version: 2026_06_15_210947) do
   create_table "inquiries", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "email", null: false
     t.string "full_name", null: false
@@ -33,6 +33,18 @@ ActiveRecord::Schema[7.2].define(version: 2026_06_13_172927) do
     t.index ["travel_package_id"], name: "index_inquiries_on_travel_package_id"
   end
 
+  create_table "subscribers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "email", null: false
+    t.string "name"
+    t.integer "status", default: 0, null: false
+    t.string "unsubscribe_token"
+    t.datetime "subscribed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_subscribers_on_email", unique: true
+    t.index ["unsubscribe_token"], name: "index_subscribers_on_unsubscribe_token", unique: true
+  end
+
   create_table "travel_packages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title", null: false
     t.text "description"
@@ -46,6 +58,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_06_13_172927) do
     t.integer "number_of_days", default: 1, null: false
     t.integer "number_of_nights", default: 0, null: false
     t.datetime "deleted_at"
+    t.string "image"
     t.index ["deleted_at"], name: "index_travel_packages_on_deleted_at"
     t.index ["destination"], name: "index_travel_packages_on_destination"
     t.index ["is_active"], name: "index_travel_packages_on_is_active"

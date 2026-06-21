@@ -5,11 +5,17 @@ gem "rails", "~> 7.2.3", ">= 7.2.3.1"
 gem "bcrypt"
 gem "blueprinter"
 gem "bootsnap", require: false
+gem "carrierwave", "~> 3.1"
+gem "dotenv-rails"
 gem "jwt"
 gem "kaminari"
 gem "mysql2", "~> 0.5"
 gem "puma", ">= 5.0"
-gem "dotenv-rails"
+gem "rack-cors"
+gem 'redis'
+gem 'resend'
+gem 'rest-client'
+gem 'sidekiq'
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
 group :development, :test do

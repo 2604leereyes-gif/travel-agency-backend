@@ -3,6 +3,9 @@
 class TravelPackage < ApplicationRecord
   include SoftDeletable
 
+  mount_uploader :image, ImageUploader
+
+  validates :image, presence: true
   validates :title, presence: true
   validates :description, presence: true
   validates :destination, presence: true
@@ -14,18 +17,30 @@ class TravelPackage < ApplicationRecord
 
   scope :active, -> { where(is_active: true) }
   scope :destination, ->(destination) { where(destination: destination) if destination.present? }
- 
-  after_initialize :set_defaults, if: :new_record?
 
   default_scope { where(deleted_at: nil) }
 
   has_many :inquiries, dependent: :destroy
 
-  def set_defaults
-    self.is_active = true if is_active.nil?
-    self.destination ||= travel_package.destination
-    self.number_of_travelers ||= travel_package.number_of_travelers
-    self.estimated_budget ||= travel_package.base_price
+  require 'base64'
+
+  def image_data=(data)
+    return if data.blank?
+    
+    content_type = data.match(/data:(.*);base64/)[1]
+    extension = content_type.split('/').last
+    decoded = Base64.decode64(data.split(',').last)
+    
+    temp_file = Tempfile.new(['package_image', ".#{extension}"])
+    temp_file.binmode
+    temp_file.write(decoded)
+    temp_file.rewind
+    
+    self.image = ActionDispatch::Http::UploadedFile.new(
+      tempfile: temp_file,
+      filename: "package_image.#{extension}",
+      type: content_type
+    )
   end
 
   def active?

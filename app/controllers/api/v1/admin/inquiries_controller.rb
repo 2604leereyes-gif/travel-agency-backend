@@ -11,6 +11,8 @@ class Api::V1::Admin::InquiriesController < Api::V1::AdminController
       inquiries: InquiryBlueprint.render_as_hash(inquiries),
       meta: {
         current_page: inquiries.current_page,
+        next_page: inquiries.next_page,
+        prev_page: inquiries.prev_page,
         total_pages: inquiries.total_pages,
         total_count: inquiries.total_count
       }
@@ -25,13 +27,16 @@ class Api::V1::Admin::InquiriesController < Api::V1::AdminController
     if @inquiry.update(inquiry_params)
       render json: InquiryBlueprint.render_as_hash(@inquiry)
     else
-      render json: { errors: @inquiry.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: @inquiry.errors.full_messages.join(", ") }, status: :unprocessable_entity
     end
   end
 
   def destroy
-    @inquiry.soft_delete
-    render json: { message: "Inquiry deleted" }
+    if @inquiry.destroy
+      render json: { message: "Inquiry deleted" }
+    else
+      render json: { error: @inquiry.errors.full_messages.join(", ") }, status: :unprocessable_entity
+    end
   end
 
   private
