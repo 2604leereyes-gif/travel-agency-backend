@@ -14,6 +14,7 @@ Rails.application.routes.draw do
         resources :travel_packages
         resource :user, only: :show
         resources :users, only: [:index, :create, :update, :destroy]
+        resources :analytics, only: :index
       end
       scope module: :client do
         resources :travel_packages, only: [:index, :show] do

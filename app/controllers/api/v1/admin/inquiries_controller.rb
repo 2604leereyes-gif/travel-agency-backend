@@ -3,7 +3,7 @@ class Api::V1::Admin::InquiriesController < Api::V1::AdminController
   before_action :set_inquiry, only: [:show, :update, :destroy]
 
   def index
-    inquiries = Inquiry.order(created_at: :desc)
+    inquiries = Inquiry.order(created_at: :desc).includes(:travel_package)
                        .page(params[:page])
                        .per(10)
 

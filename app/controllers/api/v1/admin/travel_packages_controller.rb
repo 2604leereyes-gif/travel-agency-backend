@@ -29,7 +29,6 @@ class Api::V1::Admin::TravelPackagesController < Api::V1::AdminController
     if travel_package.save
       render json: TravelPackageBlueprint.render_as_hash(travel_package), status: :created
     else
-      p travel_package.errors.full_messages
       render json: { error: travel_package.errors.full_messages.join(", ") }, status: :unprocessable_entity
     end
   end

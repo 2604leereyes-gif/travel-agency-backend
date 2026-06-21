@@ -48,7 +48,7 @@ class CsvExportService
     file_url = "#{base_url}/uploads/exports/#{csv_filename}"
 
     # Broadcast export completed
-    status = broadcast_export_status(export_id, 'completed', { file_url: file_url, file_path: file_path.to_s }
+    status = broadcast_export_status(export_id, 'completed', { file_url: file_url, file_path: file_path.to_s })
 
     {
       file_path: file_path.to_s,

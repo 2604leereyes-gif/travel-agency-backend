@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Api::V1::Admin::UserController < Api::V1::AdminController
-    before_action :authenticate_user!
 
     def update
         if current_user.update(user_params)
