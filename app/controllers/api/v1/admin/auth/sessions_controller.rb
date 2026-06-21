@@ -8,7 +8,7 @@ class Api::V1::Admin::Auth::SessionsController < ApplicationController
             return render json: { error: "Invalid credentials" }, status: :unauthorized
         end
 
-        token = JWTService.encode(user_id: user.id)
+        token = JwtService.encode(user_id: user.id)
 
         render json: {
             token: token,
