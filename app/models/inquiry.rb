@@ -15,7 +15,12 @@ class Inquiry < ApplicationRecord
 
   validates :email, presence: true
   validates :full_name, presence: true
-
+ 
+  validates :phone_number,
+            format: {
+              with: /\A(?:\+63|0)9\d{9}\z/,
+              message: "must be a valid Philippine mobile number"
+            }
   validates :number_of_travelers,
             numericality: { greater_than: 0, allow_nil: true }
 

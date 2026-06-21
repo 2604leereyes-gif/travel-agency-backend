@@ -12,4 +12,8 @@ class InquiryBlueprint < Blueprinter::Base
   field :updated_at do |obj|
     obj.updated_at.iso8601
   end
+
+  field :travel_package_title do |obj|
+    obj.travel_package&.title
+  end
 end

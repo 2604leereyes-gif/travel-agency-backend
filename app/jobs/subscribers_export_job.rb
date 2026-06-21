@@ -6,7 +6,7 @@ class SubscribersExportJob < ApplicationJob
   def perform(export_id, filename, base_url)
     subscribers = Subscriber.order(subscribed_at: :desc)
 
-    headers = %w[id email name status unsubscribe_token subscribed_at created_at updated_at]
+    headers = %w[id email name status subscribed_at created_at updated_at]
     rows = subscribers.map do |s|
       [
         s.id,
