@@ -12,6 +12,8 @@ Rails.application.routes.draw do
         end
         resources :inquiries, except: :create
         resources :travel_packages
+        resources :promos
+        resource :contact, only: [:show, :update]
         resource :user, only: :show
         resources :users, only: [:index, :create, :update, :destroy]
         resources :analytics, only: :index
@@ -26,6 +28,8 @@ Rails.application.routes.draw do
           end
         end
         resources :inquiries, only: [:create]
+        resources :promos, only: [:index, :show]
+        resource :contact, only: :show
       end
     end
   end
