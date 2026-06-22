@@ -3,9 +3,19 @@ class Api::V1::Admin::InquiriesController < Api::V1::AdminController
   before_action :set_inquiry, only: [:show, :update, :destroy]
 
   def index
-    inquiries = Inquiry.order(created_at: :desc).includes(:travel_package)
-                       .page(params[:page])
-                       .per(10)
+    inquiries = Inquiry.includes(:travel_package)
+    
+    if params[:search].present?
+      search_term = "%#{params[:search]}%"
+      inquiries = inquiries.where(
+        "full_name LIKE :search OR email :search OR destination LIKE :search",
+        search_term
+      )
+    end
+    
+    inquiries = inquiries.order(created_at: :desc)
+                         .page(params[:page])
+                         .per(10)
 
     render json: {
       inquiries: InquiryBlueprint.render_as_hash(inquiries),

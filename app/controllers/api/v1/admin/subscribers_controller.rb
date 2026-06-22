@@ -5,9 +5,15 @@ class Api::V1::Admin::SubscribersController < Api::V1::AdminController
 
     def index
         subscribers = Subscriber.active
-                                .order(subscribed_at: :desc)
-                                .page(params[:page])
-                                .per(10)
+        
+        if params[:search].present?
+          search_term = "%#{params[:search]}%"
+          subscribers = subscribers.where("name LIKE :search OR email LIKE :search", search_term)
+        end
+        
+        subscribers = subscribers.order(subscribed_at: :desc)
+                                  .page(params[:page])
+                                  .per(10)
 
         render json: {
         subscribers: SubscriberBlueprint.render_as_hash(subscribers),
