@@ -49,7 +49,8 @@ class CsvExportService
 
     # Broadcast export completed
     status = broadcast_export_status(export_id, 'completed', { file_url: file_url, file_path: file_path.to_s })
-
+    Rails.logger.info '--------------------------'
+    Rails.logger.info status
     {
       file_path: file_path.to_s,
       file_url: file_url,

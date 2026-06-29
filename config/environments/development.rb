@@ -8,6 +8,12 @@ Rails.application.configure do
   # it changes. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
   config.enable_reloading = true
+  #for export csv
+  config.action_cable.url = "wss://appetite-carload-unwieldy.ngrok-free.dev/cable"
+  config.action_cable.allowed_request_origins = [
+  "http://localhost:5173",
+  "https://travel-agency-frontend-inky.vercel.app"
+]
 
   # Do not eager load code on boot.
   config.eager_load = false
