@@ -313,7 +313,6 @@ GEM
     unicode-display_width (3.2.0)
       unicode-emoji (~> 4.1)
     unicode-emoji (4.2.0)
-    uri (1.1.1)
     useragent (0.16.11)
     websocket-driver (0.8.1)
       base64
@@ -345,7 +344,6 @@ DEPENDENCIES
   rubocop-rails-omakase
   sidekiq
   tzinfo-data
-  uri (>= 0.12.3)
 
 BUNDLED WITH
    2.4.19
